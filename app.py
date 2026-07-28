@@ -145,6 +145,14 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
 .stTextInput input, .stDateInput input, .stTextArea textarea {{
     border-radius: 8px !important;
     border: 1px solid #D6DCE5 !important;
+    background: {PUTIH} !important;
+    color: #1A1A1A !important;
+}}
+.stTextInput input::placeholder, .stTextArea textarea::placeholder {{
+    color: #9AA3AF !important;
+}}
+label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label {{
+    color: #1A1A1A !important;
 }}
 .stTextInput input:focus, .stDateInput input:focus {{
     border-color: {BIRU} !important;
