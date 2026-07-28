@@ -151,7 +151,8 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
 .stTextInput input::placeholder, .stTextArea textarea::placeholder {{
     color: #9AA3AF !important;
 }}
-label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label {{
+label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label,
+[data-testid="stWidgetLabel"] p {{
     color: #1A1A1A !important;
 }}
 .stTextInput input:focus, .stDateInput input:focus {{
@@ -167,6 +168,11 @@ label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label {{
     margin-right: 6px;
     border: 1px solid #E3E7EE;
 }}
+.stRadio [role="radiogroup"] label p,
+.stRadio [role="radiogroup"] label span,
+.stRadio [role="radiogroup"] label div {{
+    color: #1A1A1A !important;
+}}
 input[type="radio"] {{ accent-color: {BIRU}; }}
 
 /* ---- File uploader ---- */
@@ -174,6 +180,11 @@ input[type="radio"] {{ accent-color: {BIRU}; }}
     border-radius: 10px !important;
     border: 1.5px dashed {BIRU} !important;
     background: #F7FAFF !important;
+}}
+[data-testid="stFileUploaderDropzone"] p,
+[data-testid="stFileUploaderDropzone"] span,
+[data-testid="stFileUploaderDropzone"] small {{
+    color: #1A1A1A !important;
 }}
 
 /* ---- Tombol submit (merah, sesuai logo) ---- */
@@ -189,6 +200,9 @@ div[data-testid="stFormSubmitButton"] button {{
 div[data-testid="stFormSubmitButton"] button:hover {{
     background: #C10510 !important;
 }}
+div[data-testid="stFormSubmitButton"] button p {{
+    color: {PUTIH} !important;
+}}
 
 /* ---- Tombol biasa (download dsb, biru) ---- */
 .stDownloadButton button {{
@@ -200,6 +214,9 @@ div[data-testid="stFormSubmitButton"] button:hover {{
 }}
 .stDownloadButton button:hover {{
     background: {BIRU_GELAP} !important;
+}}
+.stDownloadButton button p {{
+    color: {PUTIH} !important;
 }}
 
 /* ---- Tabs ---- */
@@ -215,8 +232,14 @@ div[data-testid="stFormSubmitButton"] button:hover {{
     font-weight: 600;
     color: {ABU_TEKS};
 }}
+.stTabs [data-baseweb="tab"] p {{
+    color: {ABU_TEKS} !important;
+}}
 .stTabs [aria-selected="true"] {{
     background: {BIRU} !important;
+    color: {PUTIH} !important;
+}}
+.stTabs [aria-selected="true"] p {{
     color: {PUTIH} !important;
 }}
 
