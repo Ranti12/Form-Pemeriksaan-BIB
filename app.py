@@ -33,6 +33,7 @@ COLUMNS = [
 # ---------- Warna brand Astra Isuzu ----------
 BIRU = "#005BAF"
 BIRU_GELAP = "#003D78"
+BIRU_MUDA = "#CFE3F5"
 MERAH = "#E30613"
 PUTIH = "#FFFFFF"
 ABU_BG = "#F2F4F7"
@@ -134,9 +135,9 @@ html, body, [class*="css"] {{
 /* ---- Card container (st.container border) ---- */
 div[data-testid="stVerticalBlockBorderWrapper"] {{
     background: {ABU_BG};
-    border-radius: 14px !important;
-    border: 1px solid #E3E7EE !important;
-    padding: 4px 6px;
+    border-radius: 18px !important;
+    border: 1.5px solid {BIRU} !important;
+    padding: 6px 8px;
     margin-bottom: 16px;
 }}
 
@@ -221,7 +222,7 @@ div[data-testid="stFormSubmitButton"] button p {{
 /* ---- Tabs ---- */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 6px;
-    background: {ABU_BG};
+    background: {PUTIH};
     padding: 5px;
     border-radius: 12px;
     border: 1px solid #E3E7EE;
@@ -229,12 +230,13 @@ div[data-testid="stFormSubmitButton"] button p {{
 .stTabs [data-baseweb="tab"] {{
     border-radius: 8px;
     font-weight: 600;
+    background: {BIRU_MUDA} !important;
 }}
 .stTabs [data-baseweb="tab"],
 .stTabs [data-baseweb="tab"] div,
 .stTabs [data-baseweb="tab"] p,
 .stTabs [data-baseweb="tab"] span {{
-    color: {ABU_TEKS} !important;
+    color: {BIRU_GELAP} !important;
 }}
 .stTabs [aria-selected="true"] {{
     background: {BIRU} !important;
