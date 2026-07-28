@@ -367,7 +367,7 @@ with tab_form:
 
             toolkit = st.radio("Toolkit *", ["Ada", "Tidak ada"], horizontal=True, key="toolkit")
 
-        submitted = st.form_submit_button("✓  Kirim Formulir", use_container_width=True)
+        submitted = st.form_submit_button("Kirim Formulir", use_container_width=True)
 
         if submitted:
             errors = []
