@@ -35,6 +35,7 @@ BIRU = "#005BAF"
 BIRU_GELAP = "#003D78"
 BIRU_MUDA = "#CFE3F5"
 MERAH = "#E30613"
+MERAH_MUDA = "#FCE0E2"
 PUTIH = "#FFFFFF"
 ABU_BG = "#F2F4F7"
 ABU_TEKS = "#4A4A4A"
@@ -47,6 +48,12 @@ def get_base64(path: Path) -> str:
 
 
 logo_b64 = get_base64(LOGO_PATH)
+
+# ---------- Session state ----------
+if "errors" not in st.session_state:
+    st.session_state.errors = {}
+if "just_submitted" not in st.session_state:
+    st.session_state.just_submitted = False
 
 # ---------- CSS ----------
 st.markdown(f"""
@@ -113,7 +120,44 @@ html, body, [class*="css"] {{
     text-align: center;
     color: {ABU_TEKS};
     font-size: 13px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
+}}
+
+/* ---- Progress indicator ---- */
+.bib-progress {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 4px 0 22px 0;
+    flex-wrap: wrap;
+}}
+.bib-progress-step {{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: {ABU_TEKS};
+    white-space: nowrap;
+}}
+.bib-progress-step span {{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: {BIRU};
+    color: {PUTIH};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-family: 'Poppins', sans-serif;
+    flex-shrink: 0;
+}}
+.bib-progress-line {{
+    width: 26px;
+    height: 2px;
+    background: #D6DCE5;
 }}
 
 /* ---- Section label ---- */
@@ -128,6 +172,7 @@ html, body, [class*="css"] {{
     padding: 6px 16px;
     border-radius: 8px;
     margin: 6px 0 14px 0;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
 }}
 .bib-section.biru {{ background: {BIRU}; }}
 .bib-section.merah {{ background: {MERAH}; }}
@@ -136,9 +181,42 @@ html, body, [class*="css"] {{
 div[data-testid="stVerticalBlockBorderWrapper"] {{
     background: {ABU_BG};
     border-radius: 18px !important;
-    border: 1.5px solid {BIRU} !important;
+    border: 1.5px solid #E3E7EE !important;
     padding: 6px 8px;
     margin-bottom: 16px;
+}}
+
+/* ---- Card top accent strip ---- */
+.card-accent {{
+    height: 4px;
+    border-radius: 4px;
+    margin: 2px 4px 12px 4px;
+}}
+.card-accent.biru {{ background: {BIRU}; }}
+.card-accent.merah {{ background: {MERAH}; }}
+
+/* ---- Custom field label + required star ---- */
+.bib-label {{
+    font-weight: 600;
+    font-size: 14px;
+    color: #1A1A1A;
+    margin: 2px 0 4px 2px;
+}}
+.req-star {{
+    color: {MERAH};
+    font-weight: 700;
+}}
+
+/* ---- Inline field error ---- */
+.field-error {{
+    color: {MERAH};
+    background: {MERAH_MUDA};
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: -6px 2px 12px 2px;
+    display: inline-block;
 }}
 
 /* ---- Inputs ---- */
@@ -160,13 +238,14 @@ label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label,
     box-shadow: 0 0 0 1px {BIRU} !important;
 }}
 
-/* ---- Radio (accent warna biru) ---- */
+/* ---- Radio (accent warna biru + highlight saat dipilih) ---- */
 .stRadio [role="radiogroup"] label {{
     background: {PUTIH};
     padding: 6px 14px;
     border-radius: 20px;
     margin-right: 6px;
     border: 1px solid #D6DCE5;
+    transition: 0.15s ease;
 }}
 .stRadio [role="radiogroup"] label p,
 .stRadio [role="radiogroup"] label span,
@@ -182,6 +261,10 @@ input[type="radio"] {{ accent-color: {BIRU}; }}
 }}
 .stRadio [role="radiogroup"] label svg {{
     fill: {BIRU} !important;
+}}
+.stRadio [role="radiogroup"] label:has(input:checked) {{
+    background: {BIRU_MUDA} !important;
+    border-color: {BIRU} !important;
 }}
 
 /* ---- File uploader ---- */
@@ -266,6 +349,38 @@ div[data-testid="stMetric"] {{
     padding: 10px 14px;
 }}
 
+/* ---- Success card ---- */
+.bib-success {{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #E9F7EF;
+    border: 1.5px solid #34A853;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin: 8px 0 16px 0;
+}}
+.bib-success .icon {{
+    font-size: 26px;
+}}
+.bib-success .text b {{
+    display: block;
+    color: #1E7E34;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+}}
+.bib-success .text span {{
+    color: #3C763D;
+    font-size: 12.5px;
+}}
+
+/* ---- File preview caption ---- */
+.bib-file-preview {{
+    font-size: 12.5px;
+    color: {ABU_TEKS};
+    margin: -4px 0 10px 2px;
+}}
+
 /* ---- Footer ---- */
 .bib-footer {{
     text-align: center;
@@ -275,6 +390,38 @@ div[data-testid="stMetric"] {{
 }}
 .bib-footer b {{ color: {BIRU}; }}
 .bib-footer span {{ color: {MERAH}; }}
+
+/* ---- Mobile responsiveness ---- */
+@media (max-width: 480px) {{
+    .block-container {{
+        padding-left: 12px;
+        padding-right: 12px;
+    }}
+    .bib-header {{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 20px 18px 34px 18px;
+    }}
+    .bib-header .bib-title {{
+        text-align: left;
+    }}
+    .bib-header .bib-title h1 {{
+        font-size: 18px;
+    }}
+    .bib-progress-step {{
+        font-size: 11px;
+    }}
+    .bib-progress-line {{
+        width: 16px;
+    }}
+    .stRadio [role="radiogroup"] {{
+        flex-wrap: wrap;
+    }}
+    div[data-testid="stFileUploaderDropzone"] {{
+        min-height: 84px;
+    }}
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -291,6 +438,17 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 st.markdown('<div class="bib-sub">Isi checklist pemeriksaan kendaraan dan kelengkapan sebelum unit berangkat.</div>', unsafe_allow_html=True)
+
+# ---------- Progress indicator ----------
+st.markdown("""
+<div class="bib-progress">
+    <div class="bib-progress-step"><span>1</span>Data Umum</div>
+    <div class="bib-progress-line"></div>
+    <div class="bib-progress-step"><span>2</span>Dokumen</div>
+    <div class="bib-progress-line"></div>
+    <div class="bib-progress-step"><span>3</span>Barang Bawaan</div>
+</div>
+""", unsafe_allow_html=True)
 
 
 def load_data() -> pd.DataFrame:
@@ -317,93 +475,160 @@ def save_uploaded_file(uploaded_file, no_polisi: str, label: str) -> str:
     return filename
 
 
+def field_label(text: str, required: bool = True):
+    star = ' <span class="req-star">*</span>' if required else ""
+    st.markdown(f'<div class="bib-label">{text}{star}</div>', unsafe_allow_html=True)
+
+
+def show_error(field_key: str):
+    msg = st.session_state.errors.get(field_key)
+    if msg:
+        st.markdown(f'<div class="field-error">⚠️ {msg}</div>', unsafe_allow_html=True)
+
+
+def show_file_preview(uploaded_file, empty_hint: str = ""):
+    if uploaded_file is None:
+        if empty_hint:
+            st.markdown(f'<div class="bib-file-preview">{empty_hint}</div>', unsafe_allow_html=True)
+        return
+    if uploaded_file.type is not None and uploaded_file.type.startswith("image"):
+        st.image(uploaded_file, width=160)
+    else:
+        st.markdown(f'<div class="bib-file-preview">📄 File terpilih: <b>{uploaded_file.name}</b></div>', unsafe_allow_html=True)
+
+
 tab_form, tab_data = st.tabs(["📝  Isi Formulir", "📊  Data Tersimpan"])
 
 # ================= TAB 1: FORM =================
 with tab_form:
+
+    if st.session_state.just_submitted:
+        st.markdown("""
+        <div class="bib-success">
+            <div class="icon">✅</div>
+            <div class="text">
+                <b>Data pemeriksaan berhasil disimpan!</b>
+                <span>Silakan isi formulir baru untuk kendaraan berikutnya.</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.balloons()
+        st.session_state.just_submitted = False
+
     with st.form("form_pemeriksaan_bib", clear_on_submit=False, border=False):
 
         st.markdown('<div class="bib-section biru">🔵 Data Umum</div>', unsafe_allow_html=True)
         with st.container(border=True):
-            nama_mekanik = st.text_input("Nama Mekanik *")
-            tanggal_pemeriksaan = st.date_input("Tanggal Pemeriksaan *", value=date.today())
-            no_polisi = st.text_input("No. Polisi Kendaraan *")
+            st.markdown('<div class="card-accent biru"></div>', unsafe_allow_html=True)
+
+            field_label("Nama Mekanik")
+            nama_mekanik = st.text_input("Nama Mekanik", label_visibility="collapsed")
+            show_error("nama_mekanik")
+
+            field_label("Tanggal Pemeriksaan")
+            tanggal_pemeriksaan = st.date_input("Tanggal Pemeriksaan", value=date.today(), label_visibility="collapsed")
+
+            field_label("No. Polisi Kendaraan")
+            no_polisi = st.text_input("No. Polisi Kendaraan", label_visibility="collapsed")
+            show_error("no_polisi")
 
         st.markdown('<div class="bib-section merah">🔴 Dokumen Kendaraan</div>', unsafe_allow_html=True)
         with st.container(border=True):
+            st.markdown('<div class="card-accent merah"></div>', unsafe_allow_html=True)
+
             col1, col2 = st.columns(2)
             with col1:
-                stnk = st.radio("STNK *", ["Berlaku", "Mati"], horizontal=True, key="stnk")
+                field_label("STNK")
+                stnk = st.radio("STNK", ["Berlaku", "Mati"], horizontal=True, key="stnk", label_visibility="collapsed")
             with col2:
-                tgl_stnk = st.date_input("Tanggal Berlaku STNK *", value=date.today(), key="tgl_stnk")
+                field_label("Tanggal Berlaku STNK")
+                tgl_stnk = st.date_input("Tanggal Berlaku STNK", value=date.today(), key="tgl_stnk", label_visibility="collapsed")
 
-            sim_pengemudi = st.radio("SIM Pengemudi *", ["Berlaku", "Mati"], horizontal=True, key="sim")
+            field_label("SIM Pengemudi")
+            sim_pengemudi = st.radio("SIM Pengemudi", ["Berlaku", "Mati"], horizontal=True, key="sim", label_visibility="collapsed")
 
             col3, col4 = st.columns(2)
             with col3:
-                buku_kir = st.radio("Buku Kir *", ["Berlaku", "Mati"], horizontal=True, key="kir")
+                field_label("Buku Kir")
+                buku_kir = st.radio("Buku Kir", ["Berlaku", "Mati"], horizontal=True, key="kir", label_visibility="collapsed")
             with col4:
-                tgl_kir = st.date_input("Tanggal Berlaku Buku Kir *", value=date.today(), key="tgl_kir")
+                field_label("Tanggal Berlaku Buku Kir")
+                tgl_kir = st.date_input("Tanggal Berlaku Buku Kir", value=date.today(), key="tgl_kir", label_visibility="collapsed")
 
+            field_label("Bukti Transfer Suku Cadang")
             bukti_transfer = st.radio(
-                "Bukti Transfer Suku Cadang *", ["Ada", "Tidak ada"], horizontal=True, key="bukti_transfer"
+                "Bukti Transfer Suku Cadang", ["Ada", "Tidak ada"], horizontal=True, key="bukti_transfer", label_visibility="collapsed"
             )
 
+            field_label("Surat Peminjaman Kendaraan (upload file)")
             surat_peminjaman = st.file_uploader(
-                "Surat Peminjaman Kendaraan * (upload file)",
+                "Surat Peminjaman Kendaraan",
                 type=["pdf", "jpg", "jpeg", "png"],
                 key="surat_peminjaman",
+                label_visibility="collapsed",
             )
+            show_file_preview(surat_peminjaman)
+            show_error("surat_peminjaman")
 
         st.markdown('<div class="bib-section biru">🔵 Barang Bawaan</div>', unsafe_allow_html=True)
         with st.container(border=True):
-            sparepart = st.radio("Sparepart *", ["Ada", "Tidak ada"], horizontal=True, key="sparepart")
+            st.markdown('<div class="card-accent biru"></div>', unsafe_allow_html=True)
 
+            field_label("Sparepart")
+            sparepart = st.radio("Sparepart", ["Ada", "Tidak ada"], horizontal=True, key="sparepart", label_visibility="collapsed")
+
+            field_label("Foto Sparepart", required=False)
             foto_sparepart = st.file_uploader(
-                "Foto Sparepart (opsional)",
+                "Foto Sparepart",
                 type=["jpg", "jpeg", "png"],
                 key="foto_sparepart",
+                label_visibility="collapsed",
             )
+            show_file_preview(foto_sparepart)
 
-            toolkit = st.radio("Toolkit *", ["Ada", "Tidak ada"], horizontal=True, key="toolkit")
+            field_label("Toolkit")
+            toolkit = st.radio("Toolkit", ["Ada", "Tidak ada"], horizontal=True, key="toolkit", label_visibility="collapsed")
 
-        submitted = st.form_submit_button("Kirim Formulir", use_container_width=True)
+        submitted = st.form_submit_button("✓  Kirim Formulir", use_container_width=True)
 
         if submitted:
-            errors = []
+            errors = {}
             if not nama_mekanik.strip():
-                errors.append("Nama Mekanik wajib diisi.")
+                errors["nama_mekanik"] = "Nama Mekanik wajib diisi."
             if not no_polisi.strip():
-                errors.append("No. Polisi Kendaraan wajib diisi.")
+                errors["no_polisi"] = "No. Polisi Kendaraan wajib diisi."
             if surat_peminjaman is None:
-                errors.append("Surat Peminjaman Kendaraan wajib diupload.")
+                errors["surat_peminjaman"] = "Surat Peminjaman Kendaraan wajib diupload."
 
             if errors:
-                for e in errors:
-                    st.error(e)
+                st.session_state.errors = errors
+                st.rerun()
             else:
-                surat_filename = save_uploaded_file(surat_peminjaman, no_polisi, "surat_peminjaman")
-                foto_filename = save_uploaded_file(foto_sparepart, no_polisi, "foto_sparepart")
+                st.session_state.errors = {}
+                with st.spinner("Menyimpan data..."):
+                    surat_filename = save_uploaded_file(surat_peminjaman, no_polisi, "surat_peminjaman")
+                    foto_filename = save_uploaded_file(foto_sparepart, no_polisi, "foto_sparepart")
 
-                row = {
-                    "Timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "Nama Mekanik": nama_mekanik.strip(),
-                    "Tanggal Pemeriksaan": tanggal_pemeriksaan.strftime("%Y-%m-%d"),
-                    "No. Polisi Kendaraan": no_polisi.strip().upper(),
-                    "STNK": stnk,
-                    "Tanggal Berlaku STNK": tgl_stnk.strftime("%Y-%m-%d"),
-                    "SIM Pengemudi": sim_pengemudi,
-                    "Buku Kir": buku_kir,
-                    "Tanggal Berlaku Buku Kir": tgl_kir.strftime("%Y-%m-%d"),
-                    "Bukti Transfer Suku Cadang": bukti_transfer,
-                    "Surat Peminjaman Kendaraan (file)": surat_filename,
-                    "Barang Bawaan": "",
-                    "Sparepart": sparepart,
-                    "Foto Sparepart (file)": foto_filename,
-                    "Toolkit": toolkit,
-                }
-                save_row(row)
-                st.success("Data pemeriksaan berhasil disimpan! ✅")
+                    row = {
+                        "Timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Nama Mekanik": nama_mekanik.strip(),
+                        "Tanggal Pemeriksaan": tanggal_pemeriksaan.strftime("%Y-%m-%d"),
+                        "No. Polisi Kendaraan": no_polisi.strip().upper(),
+                        "STNK": stnk,
+                        "Tanggal Berlaku STNK": tgl_stnk.strftime("%Y-%m-%d"),
+                        "SIM Pengemudi": sim_pengemudi,
+                        "Buku Kir": buku_kir,
+                        "Tanggal Berlaku Buku Kir": tgl_kir.strftime("%Y-%m-%d"),
+                        "Bukti Transfer Suku Cadang": bukti_transfer,
+                        "Surat Peminjaman Kendaraan (file)": surat_filename,
+                        "Barang Bawaan": "",
+                        "Sparepart": sparepart,
+                        "Foto Sparepart (file)": foto_filename,
+                        "Toolkit": toolkit,
+                    }
+                    save_row(row)
+                st.session_state.just_submitted = True
+                st.rerun()
 
 # ================= TAB 2: DATA =================
 with tab_data:
