@@ -230,16 +230,20 @@ div[data-testid="stFormSubmitButton"] button p {{
 .stTabs [data-baseweb="tab"] {{
     border-radius: 8px;
     font-weight: 600;
-    color: {ABU_TEKS};
 }}
-.stTabs [data-baseweb="tab"] p {{
+.stTabs [data-baseweb="tab"],
+.stTabs [data-baseweb="tab"] div,
+.stTabs [data-baseweb="tab"] p,
+.stTabs [data-baseweb="tab"] span {{
     color: {ABU_TEKS} !important;
 }}
 .stTabs [aria-selected="true"] {{
     background: {BIRU} !important;
-    color: {PUTIH} !important;
 }}
-.stTabs [aria-selected="true"] p {{
+.stTabs [aria-selected="true"],
+.stTabs [aria-selected="true"] div,
+.stTabs [aria-selected="true"] p,
+.stTabs [aria-selected="true"] span {{
     color: {PUTIH} !important;
 }}
 
