@@ -57,7 +57,7 @@ html, body, [class*="css"] {{
 }}
 
 .stApp {{
-    background-color: {ABU_BG};
+    background-color: {PUTIH};
 }}
 
 #MainMenu, footer, header {{visibility: hidden;}}
@@ -133,11 +133,10 @@ html, body, [class*="css"] {{
 
 /* ---- Card container (st.container border) ---- */
 div[data-testid="stVerticalBlockBorderWrapper"] {{
-    background: {PUTIH};
+    background: {ABU_BG};
     border-radius: 14px !important;
     border: 1px solid #E3E7EE !important;
     padding: 4px 6px;
-    box-shadow: 0 2px 8px rgba(0,61,120,0.05);
     margin-bottom: 16px;
 }}
 
@@ -162,11 +161,11 @@ label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label,
 
 /* ---- Radio (accent warna biru) ---- */
 .stRadio [role="radiogroup"] label {{
-    background: {ABU_BG};
+    background: {PUTIH};
     padding: 6px 14px;
     border-radius: 20px;
     margin-right: 6px;
-    border: 1px solid #E3E7EE;
+    border: 1px solid #D6DCE5;
 }}
 .stRadio [role="radiogroup"] label p,
 .stRadio [role="radiogroup"] label span,
@@ -222,7 +221,7 @@ div[data-testid="stFormSubmitButton"] button p {{
 /* ---- Tabs ---- */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 6px;
-    background: {PUTIH};
+    background: {ABU_BG};
     padding: 5px;
     border-radius: 12px;
     border: 1px solid #E3E7EE;
@@ -249,7 +248,7 @@ div[data-testid="stFormSubmitButton"] button p {{
 
 /* ---- Metric ---- */
 div[data-testid="stMetric"] {{
-    background: {PUTIH};
+    background: {ABU_BG};
     border: 1px solid #E3E7EE;
     border-radius: 12px;
     padding: 10px 14px;
