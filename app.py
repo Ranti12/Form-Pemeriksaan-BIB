@@ -174,6 +174,15 @@ label, .stMarkdown p, .stRadio label, .stDateInput label, .stTextInput label,
     color: #1A1A1A !important;
 }}
 input[type="radio"] {{ accent-color: {BIRU}; }}
+.stRadio [role="radiogroup"] label [data-baseweb="radio"] div:first-child {{
+    border-color: {BIRU} !important;
+}}
+.stRadio [role="radiogroup"] label [data-baseweb="radio"] div:first-child > div {{
+    background-color: {BIRU} !important;
+}}
+.stRadio [role="radiogroup"] label svg {{
+    fill: {BIRU} !important;
+}}
 
 /* ---- File uploader ---- */
 [data-testid="stFileUploaderDropzone"] {{
@@ -312,7 +321,7 @@ tab_form, tab_data = st.tabs(["📝  Isi Formulir", "📊  Data Tersimpan"])
 
 # ================= TAB 1: FORM =================
 with tab_form:
-    with st.form("form_pemeriksaan_bib", clear_on_submit=False):
+    with st.form("form_pemeriksaan_bib", clear_on_submit=False, border=False):
 
         st.markdown('<div class="bib-section biru">🔵 Data Umum</div>', unsafe_allow_html=True)
         with st.container(border=True):
@@ -358,7 +367,7 @@ with tab_form:
 
             toolkit = st.radio("Toolkit *", ["Ada", "Tidak ada"], horizontal=True, key="toolkit")
 
-        submitted = st.form_submit_button("✅  Kirim Formulir", use_container_width=True)
+        submitted = st.form_submit_button("✓  Kirim Formulir", use_container_width=True)
 
         if submitted:
             errors = []
@@ -423,6 +432,6 @@ with tab_data:
         )
 
 st.markdown(
-    '<div class="bib-footer">Formulir Pemeriksaan BIB &middot; <b>ASTRA</b><span>ISUZU</span> Cabang Waru</div>',
+    '<div class="bib-footer">Formulir Pemeriksaan BIB &middot; <b>ASTRA</b> <span>ISUZU</span> Cabang Waru</div>',
     unsafe_allow_html=True,
 )
