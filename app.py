@@ -106,7 +106,7 @@ html, body, [class*="css"] {{
 .bib-header .bib-title p {{
     font-family: 'Inter', sans-serif;
     font-size: 12.5px;
-    color: rgba(255,255,255,0.88);
+    color: {PUTIH} !important;
     margin: 2px 0 0 0;
 }}
 .bib-sub {{
@@ -221,14 +221,15 @@ div[data-testid="stFormSubmitButton"] button p {{
 
 /* ---- Tabs ---- */
 .stTabs [data-baseweb="tab-list"] {{
-    gap: 6px;
+    gap: 8px;
     background: {PUTIH};
     padding: 5px;
-    border-radius: 12px;
+    border-radius: 14px !important;
     border: 1px solid #E3E7EE;
 }}
 .stTabs [data-baseweb="tab"] {{
-    border-radius: 8px;
+    border-radius: 10px !important;
+    overflow: hidden;
     font-weight: 600;
     background: {BIRU_MUDA} !important;
 }}
